@@ -1,0 +1,31 @@
+This is a simple text file that can be used for testing.
+
+Chapter 1: Introduction
+
+This is the first chapter of our sample book. The EPUB to Audiobook Converter will parse this text and convert it to speech using advanced text-to-speech technology.
+
+The application supports multiple features:
+- EPUB parsing and text extraction
+- Text cleaning and normalization
+- High-quality TTS conversion
+- Audio processing and merging
+- Multiple output formats
+
+Chapter 2: Features
+
+The converter includes several key components:
+
+1. EPUB Parser - Extracts text and metadata from EPUB files
+2. Text Processor - Cleans and normalizes text for optimal TTS
+3. TTS Engine - Converts text to speech with various voice options
+4. Audio Processor - Merges audio files and adds metadata
+
+Chapter 3: Usage
+
+To use the application:
+1. Place your EPUB file in the input directory
+2. Run the main script with your desired options
+3. Wait for processing to complete
+4. Find your audiobook in the output directory
+
+This concludes our sample book content.
