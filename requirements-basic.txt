@@ -1,0 +1,7 @@
+# Basic dependencies for EPUB parsing and text processing (no TTS)
+ebooklib>=0.18
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+click>=8.0.0
+colorama>=0.4.6
+tqdm>=4.66.0
