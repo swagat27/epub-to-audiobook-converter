@@ -1,5 +1,18 @@
 # How to Run the EPUB to Audiobook Converter
 
+## 🎯 Quickest Way to Get Started
+
+```bash
+# 1. Check if you're ready to go
+python check_setup.py
+
+# 2. Use the interactive helper (recommended for beginners)
+python run.py
+
+# 3. Or jump straight to conversion
+python main.py -i "path/to/your/book.epub"
+```
+
 ## Quick Start Guide
 
 ### 1. Check Your Python Version

@@ -2,6 +2,28 @@
 
 A comprehensive Python application that converts EPUB eBooks into high-quality audiobooks using advanced text-to-speech technology with GPU acceleration support.
 
+## 🚀 Quick Start
+
+**New to this project? Start here:**
+
+```bash
+# 1. Check if everything is ready
+python check_setup.py
+
+# 2. Install dependencies if needed
+./install.sh        # Linux/macOS
+# OR
+install.bat         # Windows
+
+# 3. Use the interactive helper
+python run.py
+
+# 4. Or run directly
+python main.py -i "path/to/book.epub"
+```
+
+**Having issues?** See [HOW_TO_RUN.md](HOW_TO_RUN.md) for a step-by-step guide.
+
 ## Features
 
 - **EPUB Parsing**: Extracts text content and metadata from EPUB files chapter by chapter
