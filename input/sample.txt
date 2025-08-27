@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Sample Book</title>
+</head>
+<body>
+    <h1>Chapter 1: Introduction</h1>
+    <p>This is a sample chapter for testing the EPUB to audiobook converter.</p>
+    <p>It contains multiple paragraphs to demonstrate text processing.</p>
+    
+    <h1>Chapter 2: Main Content</h1>
+    <p>This is the second chapter with more content.</p>
+    <p>The converter will process each chapter separately.</p>
+</body>
+</html>
