@@ -1,14 +1,23 @@
-ebooklib==0.18
-beautifulsoup4==4.12.2
-lxml==4.9.3
-TTS==0.22.0
-pydub==0.25.1
-click==8.1.7
-colorama==0.4.6
-tqdm==4.66.1
-mutagen==1.47.0
-torch>=2.0.0
-torchaudio>=2.0.0
+# Core dependencies
+ebooklib>=0.18
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+pydub>=0.25.1
+click>=8.0.0
+colorama>=0.4.6
+tqdm>=4.66.0
+mutagen>=1.47.0
+
+# TTS and Audio processing (install with: pip install TTS)
+# Note: TTS requires Python <3.12. For Python 3.12+, install with:
+# pip install TTS --no-deps --force-reinstall
+# TTS>=0.22.0
+
+# PyTorch (install separately for your platform)
+# torch>=2.0.0
+# torchaudio>=2.0.0
+
+# Audio processing
 numpy>=1.24.0
 librosa>=0.10.0
 soundfile>=0.12.0

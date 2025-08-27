@@ -2,6 +2,28 @@
 
 A comprehensive Python application that converts EPUB eBooks into high-quality audiobooks using advanced text-to-speech technology with GPU acceleration support.
 
+## 🚀 Quick Start
+
+**New to this project? Start here:**
+
+```bash
+# 1. Check if everything is ready
+python check_setup.py
+
+# 2. Install dependencies if needed
+./install.sh        # Linux/macOS
+# OR
+install.bat         # Windows
+
+# 3. Use the interactive helper
+python run.py
+
+# 4. Or run directly
+python main.py -i "path/to/book.epub"
+```
+
+**Having issues?** See [HOW_TO_RUN.md](HOW_TO_RUN.md) for a step-by-step guide.
+
 ## Features
 
 - **EPUB Parsing**: Extracts text content and metadata from EPUB files chapter by chapter
@@ -50,6 +72,165 @@ brew install ffmpeg
 ```bash
 sudo apt update
 sudo apt install ffmpeg libsndfile1-dev
+```
+
+## How to Run This Application
+
+This guide will help you get the EPUB to Audiobook Converter up and running on your system.
+
+### Prerequisites
+
+- **Python 3.8 to 3.11** (TTS library has compatibility issues with Python 3.12+)
+- **pip** package manager
+- **FFmpeg** (for audio processing)
+- **Git** (to clone the repository)
+
+### Step 1: Download/Clone the Repository
+
+```bash
+# Clone the repository
+git clone https://github.com/swagat27/epub-to-audiobook-converter.git
+cd epub-to-audiobook-converter
+```
+
+### Step 2: Install Dependencies
+
+#### Option A: Automatic Installation (Recommended)
+
+**For Unix/Linux/macOS:**
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+**For Windows:**
+```cmd
+install.bat
+```
+
+#### Option B: Manual Installation
+
+**1. Install basic dependencies:**
+```bash
+pip install -r requirements-basic.txt
+```
+
+**2. Install TTS and audio dependencies:**
+```bash
+# For Python 3.8-3.11
+pip install TTS pydub mutagen numpy librosa soundfile
+
+# For GPU acceleration (optional)
+pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
+**3. Install system dependencies:**
+
+- **Windows**: Download FFmpeg from https://ffmpeg.org and add to PATH
+- **macOS**: `brew install ffmpeg`
+- **Ubuntu/Debian**: `sudo apt install ffmpeg libsndfile1-dev`
+
+### Step 3: Prepare Your EPUB Files
+
+```bash
+# Create input directory and place your EPUB files
+mkdir -p input
+# Copy your .epub files to the input/ directory
+```
+
+### Step 4: Run the Application
+
+#### Basic Usage
+
+```bash
+# Convert an EPUB to audiobook
+python main.py -i "input/your_book.epub"
+
+# The audiobook will be created in the output/ directory
+```
+
+#### Try the Demo (No TTS Dependencies Required)
+
+If you're having trouble with TTS installation, try the demo first:
+
+```bash
+python demo.py -i "input/your_book.epub"
+```
+
+This will parse the EPUB and show you the extracted text without creating audio.
+
+### Step 5: Common Usage Examples
+
+```bash
+# Basic conversion with default settings
+python main.py -i "input/book.epub"
+
+# Specify output directory and format
+python main.py -i "input/book.epub" -o "my_audiobooks" -f mp3
+
+# Use GPU acceleration for faster processing
+python main.py -i "input/book.epub" --gpu
+
+# Adjust speech settings
+python main.py -i "input/book.epub" --speed 1.2 --pitch 0.9
+
+# Use different voice/language
+python main.py -i "input/book.epub" -v es  # Spanish voice
+
+# Enable debug logging
+python main.py -i "input/book.epub" --log-level DEBUG
+```
+
+### Troubleshooting
+
+#### Python Version Issues
+
+If you have Python 3.12+, the TTS library may not install. Solutions:
+
+1. **Use Python 3.11**: Install Python 3.11 and create a virtual environment
+2. **Try force installation**: `pip install TTS --no-deps --force-reinstall`
+3. **Use the demo version**: `python demo.py` works without TTS dependencies
+
+#### Missing Dependencies
+
+```bash
+# If you get "ModuleNotFoundError"
+pip install -r requirements-basic.txt
+
+# For audio processing errors
+pip install pydub mutagen soundfile
+
+# For TTS errors
+pip install TTS
+```
+
+#### FFmpeg Not Found
+
+- **Windows**: Download from https://ffmpeg.org and add to system PATH
+- **macOS**: `brew install ffmpeg`
+- **Linux**: `sudo apt install ffmpeg` (Ubuntu/Debian) or equivalent for your distro
+
+#### GPU Issues
+
+```bash
+# Check if CUDA is available
+python -c "import torch; print(torch.cuda.is_available())"
+
+# Install CPU-only version if GPU issues persist
+pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+```
+
+### Getting Help
+
+```bash
+# View all available options
+python main.py --help
+
+# View example usage
+python examples.py
+
+# Check the logs for detailed error information
+cat logs/epub_to_audiobook.log
 ```
 
 ## Quick Start

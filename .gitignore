@@ -129,7 +129,10 @@ output/*.m4b
 output/*.mp3
 output/*.wav
 output/chapter_*.wav
+output/*/
+!output/README.md
 input/*.epub
+!input/README.md
 temp/
 *.tmp
 .DS_Store

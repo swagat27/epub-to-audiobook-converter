@@ -21,14 +21,48 @@ python --version
 
 echo.
 echo Installing Python dependencies...
-pip install -r requirements.txt
 
-if errorlevel 1 (
+REM Check Python version for TTS compatibility
+for /f "tokens=*" %%i in ('python -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')"') do set PYTHON_VERSION=%%i
+echo Detected Python version: %PYTHON_VERSION%
+
+REM Check if Python version is 3.12 or higher
+for /f "tokens=*" %%i in ('python -c "import sys; print('high' if sys.version_info >= (3, 12) else 'ok')"') do set VERSION_CHECK=%%i
+
+if "%VERSION_CHECK%"=="high" (
+    echo WARNING: Python 3.12+ detected. TTS library may not be compatible.
+    echo Installing basic dependencies only...
+    pip install -r requirements-basic.txt
+    
+    if errorlevel 1 (
+        echo.
+        echo ERROR: Failed to install basic dependencies
+        echo Please check your internet connection and try again
+        pause
+        exit /b 1
+    )
+    
     echo.
-    echo ERROR: Failed to install dependencies
-    echo Please check your internet connection and try again
-    pause
-    exit /b 1
+    echo NOTE: For full TTS functionality, consider using Python 3.8-3.11
+    echo You can still use the demo version: python demo.py
+) else (
+    echo Installing full dependencies...
+    pip install -r requirements.txt
+    
+    if errorlevel 1 (
+        echo.
+        echo ERROR: Failed to install full dependencies
+        echo Trying basic dependencies as fallback...
+        pip install -r requirements-basic.txt
+        
+        if errorlevel 1 (
+            echo.
+            echo ERROR: Failed to install basic dependencies
+            echo Please check your internet connection and try again
+            pause
+            exit /b 1
+        )
+    )
 )
 
 echo.
@@ -38,8 +72,16 @@ echo ============================================
 echo.
 echo To get started:
 echo 1. Place your EPUB files in the 'input' folder
-echo 2. Run: python main.py -i input/your_book.epub
-echo 3. Check the 'output' folder for your audiobook
+
+REM Check Python version again for instructions
+for /f "tokens=*" %%i in ('python -c "import sys; print('high' if sys.version_info >= (3, 12) else 'ok')"') do set VERSION_CHECK2=%%i
+if "%VERSION_CHECK2%"=="high" (
+    echo 2. Try demo first: python demo.py -i input/your_book.epub
+    echo 3. For full conversion, use Python 3.8-3.11 or try: python main.py -i input/your_book.epub
+) else (
+    echo 2. Run: python main.py -i input/your_book.epub
+)
+echo 4. Check the 'output' folder for your audiobook
 echo.
 echo For help: python main.py --help
 echo For examples: python examples.py
