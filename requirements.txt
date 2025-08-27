@@ -1,0 +1,14 @@
+ebooklib==0.18
+beautifulsoup4==4.12.2
+lxml==4.9.3
+TTS==0.22.0
+pydub==0.25.1
+click==8.1.7
+colorama==0.4.6
+tqdm==4.66.1
+mutagen==1.47.0
+torch>=2.0.0
+torchaudio>=2.0.0
+numpy>=1.24.0
+librosa>=0.10.0
+soundfile>=0.12.0

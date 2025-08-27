@@ -1,0 +1,90 @@
+{
+  "_comment": "EPUB to Audiobook Converter - Sample Configuration",
+  "_version": "1.0",
+  "_description": "Comprehensive configuration file for the EPUB to Audiobook converter",
+  
+  "tts_settings": {
+    "tts_model": "tts_models/en/ljspeech/tacotron2-DDC",
+    "voice": "en",
+    "speaker": "default",
+    "speed": 1.0,
+    "pitch": 1.0,
+    "gpu_acceleration": false,
+    "_comment": "TTS engine settings. Set gpu_acceleration to true if you have a CUDA-compatible GPU."
+  },
+  
+  "audio_settings": {
+    "output_format": "m4b",
+    "audio_quality": "high",
+    "chapter_pause": 2.0,
+    "sample_rate": 22050,
+    "_comment": "Audio output settings. Format can be 'mp3' or 'm4b'. Quality can be 'standard' or 'high'."
+  },
+  
+  "processing_settings": {
+    "max_chunk_length": 500,
+    "max_workers": 2,
+    "cleanup_temp": true,
+    "batch_size": 1,
+    "retry_attempts": 3,
+    "retry_delay": 1.0,
+    "_comment": "Processing optimization settings. Adjust max_workers based on your CPU cores."
+  },
+  
+  "text_processing": {
+    "text_normalization": true,
+    "expand_abbreviations": true,
+    "remove_urls": true,
+    "remove_emails": true,
+    "_comment": "Text cleaning and normalization options."
+  },
+  
+  "output_settings": {
+    "output_dir": "./output",
+    "preserve_structure": true,
+    "add_metadata": true,
+    "add_chapters": true,
+    "_comment": "Output file settings and metadata options."
+  },
+  
+  "logging_settings": {
+    "log_level": "INFO",
+    "log_file": "./logs/app.log",
+    "console_logging": true,
+    "progress_updates": true,
+    "_comment": "Logging configuration. Set log_level to DEBUG for detailed information."
+  },
+  
+  "performance_settings": {
+    "memory_limit": "2GB",
+    "torch_threads": null,
+    "gpu_memory_fraction": 0.8,
+    "enable_audio_normalization": true,
+    "enable_silence_detection": true,
+    "_comment": "Performance tuning settings. torch_threads will auto-detect if null."
+  },
+  
+  "language_models": {
+    "en": "tts_models/en/ljspeech/tacotron2-DDC",
+    "es": "tts_models/es/mai/tacotron2-DDC",
+    "fr": "tts_models/fr/mai/tacotron2-DDC",
+    "de": "tts_models/de/mai/tacotron2-DDC",
+    "it": "tts_models/it/mai/tacotron2-DDC",
+    "pt": "tts_models/pt/cv/vits",
+    "ru": "tts_models/ru/cv/vits",
+    "zh": "tts_models/zh-CN/baker/tacotron2-DDC",
+    "_comment": "Language-specific TTS models. Add or modify as needed."
+  },
+  
+  "audio_bitrate": {
+    "standard": {
+      "mp3": "128k",
+      "m4b": "64k"
+    },
+    "high": {
+      "mp3": "192k",
+      "m4b": "128k"
+    },
+    "_comment": "Bitrate settings for different quality levels and formats."
+  }
+}

@@ -1,0 +1,17 @@
+# Output directory for generated audiobooks
+# Converted audiobooks will be saved here
+
+# Generated files:
+# - *.m4b (audiobook files)
+# - *.mp3 (MP3 audiobooks)
+# - chapter_*.wav (temporary chapter files)
+
+# File structure:
+# Author-Title.m4b
+# Author-Title.mp3
+
+*.m4b
+*.mp3
+*.wav
+chapter_*.wav
+temp_*.wav

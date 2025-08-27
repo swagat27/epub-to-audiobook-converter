@@ -1,0 +1,15 @@
+# Logs directory
+# This directory will contain application log files
+
+*.log
+*.log.*
+
+# Log rotation files
+app.log.*
+epub_to_audiobook.log.*
+
+# Temporary log files
+*.tmp.log
+
+# Debug logs
+debug_*.log

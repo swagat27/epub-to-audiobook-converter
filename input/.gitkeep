@@ -1,0 +1,12 @@
+# Input directory for EPUB files
+# Place your EPUB files here for conversion
+
+# Example EPUB files would go here:
+# - my_book.epub
+# - another_book.epub
+
+# This directory is monitored by the application
+# for input files during conversion process
+
+*.epub
+sample_*.epub
