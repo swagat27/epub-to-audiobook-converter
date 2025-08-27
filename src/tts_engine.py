@@ -78,17 +78,11 @@ class TTSEngine:
             
             logger.error(error_msg)
             
-            # Try to use alternative TTS engine
-            if not TTS_AVAILABLE:
-                try:
-                    from .alternative_tts import AlternativeTTSEngine, install_pyttsx3
-                    if install_pyttsx3():
-                        logger.info("Using alternative TTS engine (pyttsx3) as fallback")
-                        self._use_alternative_engine = True
-                        self.alternative_engine = AlternativeTTSEngine(config)
-                        return
-                except ImportError:
-                    pass
+            # For now, skip alternative TTS engine due to initialization issues
+            logger.warning("TTS engine not available. Install TTS with compatible Python version.")
+            logger.info("To fix this issue:")
+            logger.info("1. Use Python 3.11 or 3.12 (recommended)")
+            logger.info("2. Or install TTS manually: pip install TTS")
             
             raise ImportError(error_msg)
         

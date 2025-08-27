@@ -30,27 +30,36 @@ class AlternativeTTSEngine:
             raise ImportError("pyttsx3 is not available. Install with: pip install pyttsx3")
         
         self.config = config
-        self.engine = pyttsx3.init()
+        
+        # Initialize pyttsx3 engine with error handling
+        try:
+            self.engine = pyttsx3.init()
+        except Exception as e:
+            logger.error(f"Failed to initialize pyttsx3 engine: {e}")
+            raise ImportError(f"pyttsx3 initialization failed: {e}")
         
         # Configure voice settings
         self.speed = config.get('speed', 1.0)
         self.pitch = config.get('pitch', 1.0)
         
-        # Set speech rate
-        rate = self.engine.getProperty('rate')
-        self.engine.setProperty('rate', int(rate * self.speed))
-        
-        # Try to set voice
-        voices = self.engine.getProperty('voices')
-        if voices and len(voices) > 0:
-            # Use first available voice, or try to find English voice
-            selected_voice = voices[0]
-            for voice in voices:
-                if 'english' in voice.name.lower() or 'en' in voice.id.lower():
-                    selected_voice = voice
-                    break
-            self.engine.setProperty('voice', selected_voice.id)
-            logger.info(f"Using voice: {selected_voice.name}")
+        try:
+            # Set speech rate
+            rate = self.engine.getProperty('rate')
+            self.engine.setProperty('rate', int(rate * self.speed))
+            
+            # Try to set voice
+            voices = self.engine.getProperty('voices')
+            if voices and len(voices) > 0:
+                # Use first available voice, or try to find English voice
+                selected_voice = voices[0]
+                for voice in voices:
+                    if 'english' in voice.name.lower() or 'en' in voice.id.lower():
+                        selected_voice = voice
+                        break
+                self.engine.setProperty('voice', selected_voice.id)
+                logger.info(f"Using voice: {selected_voice.name}")
+        except Exception as e:
+            logger.warning(f"Could not configure voice settings: {e}")
         
         logger.info("Alternative TTS Engine initialized (pyttsx3)")
         logger.warning("Using fallback TTS engine. Quality may be lower than Coqui-TTS.")
@@ -117,15 +126,6 @@ class AlternativeTTSEngine:
         except Exception as e:
             logger.warning(f"Error during cleanup: {str(e)}")
 
-def install_pyttsx3():
-    """Install pyttsx3 if not available."""
-    if not PYTTSX3_AVAILABLE:
-        print("Installing pyttsx3 as fallback TTS engine...")
-        try:
-            import subprocess
-            import sys
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "pyttsx3"])
-            return True
-        except subprocess.CalledProcessError:
-            return False
-    return True
+def check_pyttsx3_available():
+    """Check if pyttsx3 is available without installing."""
+    return PYTTSX3_AVAILABLE
