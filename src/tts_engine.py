@@ -12,10 +12,34 @@ from pathlib import Path
 from typing import Dict, Any, Optional, List
 import time
 
-import torch
-import numpy as np
-from TTS.api import TTS
-import soundfile as sf
+# Try to import TTS dependencies with fallbacks
+try:
+    import torch
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    torch = None
+
+try:
+    import numpy as np
+    NUMPY_AVAILABLE = True
+except ImportError:
+    NUMPY_AVAILABLE = False
+    np = None
+
+try:
+    from TTS.api import TTS
+    TTS_AVAILABLE = True
+except ImportError:
+    TTS_AVAILABLE = False
+    TTS = None
+
+try:
+    import soundfile as sf
+    SOUNDFILE_AVAILABLE = True
+except ImportError:
+    SOUNDFILE_AVAILABLE = False
+    sf = None
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +49,49 @@ class TTSEngine:
     """
     
     def __init__(self, config: Dict[str, Any]):
+        # Check for required dependencies
+        missing_deps = []
+        if not TTS_AVAILABLE:
+            missing_deps.append("TTS (Coqui-TTS)")
+        if not TORCH_AVAILABLE:
+            missing_deps.append("torch (PyTorch)")
+        if not NUMPY_AVAILABLE:
+            missing_deps.append("numpy")
+        if not SOUNDFILE_AVAILABLE:
+            missing_deps.append("soundfile")
+        
+        if missing_deps:
+            error_msg = f"Missing required dependencies: {', '.join(missing_deps)}\n"
+            error_msg += "Please install them using:\n"
+            if not TTS_AVAILABLE:
+                error_msg += "  pip install TTS\n"
+                error_msg += "\n⚠️  WARNING: TTS (Coqui-TTS) does not support Python 3.13!\n"
+                error_msg += "  SOLUTIONS:\n"
+                error_msg += "  1. Use Python 3.11 or 3.12 (RECOMMENDED)\n"
+                error_msg += "  2. Use alternative TTS engine (limited quality)\n"
+            if not TORCH_AVAILABLE:
+                error_msg += "  pip install torch torchaudio\n"
+            if not NUMPY_AVAILABLE:
+                error_msg += "  pip install numpy\n"
+            if not SOUNDFILE_AVAILABLE:
+                error_msg += "  pip install soundfile\n"
+            
+            logger.error(error_msg)
+            
+            # Try to use alternative TTS engine
+            if not TTS_AVAILABLE:
+                try:
+                    from .alternative_tts import AlternativeTTSEngine, install_pyttsx3
+                    if install_pyttsx3():
+                        logger.info("Using alternative TTS engine (pyttsx3) as fallback")
+                        self._use_alternative_engine = True
+                        self.alternative_engine = AlternativeTTSEngine(config)
+                        return
+                except ImportError:
+                    pass
+            
+            raise ImportError(error_msg)
+        
         self.config = config
         self.device = self._setup_device()
         self.tts_model = None
@@ -33,9 +100,16 @@ class TTSEngine:
         self.speaker = config.get('speaker', 'default')
         self.speed = config.get('speed', 1.0)
         self.pitch = config.get('pitch', 1.0)
+        self._use_alternative_engine = False
+        self.alternative_engine = None
+        self.voice = config.get('voice', 'en')
+        self.speaker = config.get('speaker', 'default')
+        self.speed = config.get('speed', 1.0)
+        self.pitch = config.get('pitch', 1.0)
         
         # Initialize TTS model
-        self._initialize_tts()
+        if not self._use_alternative_engine:
+            self._initialize_tts()
         
         logger.info(f"TTS Engine initialized with device: {self.device}")
     
@@ -119,6 +193,11 @@ class TTSEngine:
         Returns:
             str: Path to generated audio file or None if failed
         """
+        # Use alternative engine if available
+        if self._use_alternative_engine and self.alternative_engine:
+            return self.alternative_engine.text_to_speech(text, chapter_title, output_dir, chapter_num)
+        
+        # Original Coqui-TTS logic
         try:
             if not text.strip():
                 logger.warning(f"Empty text for chapter {chapter_num}")
@@ -200,7 +279,7 @@ class TTSEngine:
             logger.error(f"Error generating audio chunk: {str(e)}")
             raise
     
-    def _apply_audio_effects(self, wav: np.ndarray) -> np.ndarray:
+    def _apply_audio_effects(self, wav) -> any:
         """Apply speed and pitch effects to audio."""
         try:
             # Apply speed change
