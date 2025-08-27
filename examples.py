@@ -13,16 +13,58 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from src.epub_parser import EPUBParser
-from src.text_processor import TextProcessor
-from src.tts_engine import TTSEngine
-from src.audio_processor import AudioProcessor
-from src.config_manager import ConfigManager
-from src.logger import setup_logger
+# Try to import dependencies gracefully
+try:
+    from src.epub_parser import EPUBParser
+    EPUB_PARSER_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: EPUB parser not available: {e}")
+    EPUB_PARSER_AVAILABLE = False
+
+try:
+    from src.text_processor import TextProcessor
+    TEXT_PROCESSOR_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: Text processor not available: {e}")
+    TEXT_PROCESSOR_AVAILABLE = False
+
+try:
+    from src.tts_engine import TTSEngine
+    TTS_ENGINE_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: TTS engine not available: {e}")
+    TTS_ENGINE_AVAILABLE = False
+
+try:
+    from src.audio_processor import AudioProcessor
+    AUDIO_PROCESSOR_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: Audio processor not available: {e}")
+    AUDIO_PROCESSOR_AVAILABLE = False
+
+try:
+    from src.config_manager import ConfigManager
+    CONFIG_MANAGER_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: Config manager not available: {e}")
+    CONFIG_MANAGER_AVAILABLE = False
+
+try:
+    from src.logger import setup_logger
+    LOGGER_AVAILABLE = True
+except ImportError as e:
+    print(f"Warning: Logger not available: {e}")
+    LOGGER_AVAILABLE = False
 
 def example_basic_conversion():
     """Example of basic EPUB to audiobook conversion."""
     print("=== Basic Conversion Example ===")
+    
+    if not all([EPUB_PARSER_AVAILABLE, TEXT_PROCESSOR_AVAILABLE, TTS_ENGINE_AVAILABLE, AUDIO_PROCESSOR_AVAILABLE, LOGGER_AVAILABLE]):
+        print("❌ This example requires all dependencies to be installed.")
+        print("Missing dependencies detected. Please install them with:")
+        print("   pip install -r requirements.txt")
+        return
     
     # Setup logging
     logger = setup_logger("example", "INFO")
@@ -103,6 +145,10 @@ def example_configuration_usage():
     """Example of using configuration files."""
     print("\n=== Configuration Example ===")
     
+    if not CONFIG_MANAGER_AVAILABLE:
+        print("❌ This example requires ConfigManager to be available.")
+        return
+    
     # Create configuration manager
     config_manager = ConfigManager()
     
@@ -123,6 +169,10 @@ def example_configuration_usage():
 def example_text_processing():
     """Example of text processing capabilities."""
     print("\n=== Text Processing Example ===")
+    
+    if not TEXT_PROCESSOR_AVAILABLE:
+        print("❌ This example requires TextProcessor to be available.")
+        return
     
     processor = TextProcessor()
     
@@ -153,6 +203,10 @@ def example_text_processing():
 def example_epub_info():
     """Example of getting EPUB information without full processing."""
     print("\n=== EPUB Information Example ===")
+    
+    if not EPUB_PARSER_AVAILABLE:
+        print("❌ This example requires EPUBParser to be available.")
+        return
     
     parser = EPUBParser()
     epub_path = "input/sample.epub"
