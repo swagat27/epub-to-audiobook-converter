@@ -1,0 +1,37 @@
+{
+  "_comment": "EPUB to Audiobook Converter Configuration",
+  "_version": "1.0",
+  "tts_settings": {
+    "tts_model": "tts_models/en/ljspeech/tacotron2-DDC",
+    "voice": "en",
+    "speaker": "default",
+    "speed": 1.0,
+    "pitch": 1.0,
+    "gpu_acceleration": false,
+    "_comment": "TTS engine settings. Set gpu_acceleration to true if you have a CUDA-compatible GPU."
+  },
+  "audio_settings": {
+    "output_format": "m4b",
+    "audio_quality": "high",
+    "chapter_pause": 2.0,
+    "_comment": "Audio output settings. Format can be 'mp3' or 'm4b'. Quality can be 'standard' or 'high'."
+  },
+  "processing_settings": {
+    "max_chunk_length": 500,
+    "max_workers": 2,
+    "cleanup_temp": true,
+    "_comment": "Processing optimization settings."
+  },
+  "output_settings": {
+    "output_dir": "./output",
+    "add_metadata": true,
+    "add_chapters": true,
+    "_comment": "Output file settings."
+  },
+  "advanced_settings": {
+    "retry_attempts": 3,
+    "memory_limit": "2GB",
+    "torch_threads": null,
+    "_comment": "Advanced settings for fine-tuning performance."
+  }
+}
